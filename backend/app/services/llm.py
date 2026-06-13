@@ -6,6 +6,7 @@ AST parsing for Python, and test generation via Mistral or Groq.
 
 import ast
 import os
+import re
 import httpx
 from dotenv import load_dotenv
 from mistralai import Mistral
@@ -156,6 +157,19 @@ Return only the test code, nothing else."""
 
 
 # ---------------------------------------------------------------------------
+# Output cleaner
+# ---------------------------------------------------------------------------
+def _clean_llm_output(text: str) -> str:
+    """
+    Remove Markdown code fences that LLMs often wrap their output in.
+    Turns ```python\n...\n``` into just the raw code.
+    """
+    text = re.sub(r"^```[a-zA-Z]*\n", "", text.strip())
+    text = re.sub(r"\n```$", "", text)
+    return text.strip()
+
+
+# ---------------------------------------------------------------------------
 # LLM call wrappers
 # ---------------------------------------------------------------------------
 async def _call_mistral(prompt: str) -> str:
@@ -239,4 +253,4 @@ async def generate_tests(
         generation_prompt = _build_generation_prompt(analysis, language)
         test_code, provider = await _call_llm(generation_prompt, preferred_provider)
 
-    return {"test_code": test_code, "provider": provider}
+    return {"test_code": _clean_llm_output(test_code), "provider": provider}
