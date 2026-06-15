@@ -1,3 +1,4 @@
+
 ```mermaid
 erDiagram
     USER ||--o{ SNIPPET : "soumet"
@@ -19,11 +20,51 @@ erDiagram
         int id PK
         int snippet_id FK
         text test_code
+        string llm_provider
         string status
         datetime generated_at
     }
 ```
+---
+```mermaid
+classDiagram
+    class User {
+        +int id
+        +str email
+        +str hashed_password
+        +datetime created_at
+        +list~Snippet~ snippets
+    }
 
+    class Snippet {
+        +int id
+        +int user_id
+        +str language
+        +str source_code
+        +datetime submitted_at
+        +list~GeneratedTest~ generated_tests
+    }
+
+    class GeneratedTest {
+        +int id
+        +int snippet_id
+        +str test_code
+        +str llm_provider
+        +GenerationStatus status
+        +datetime generated_at
+    }
+
+    class GenerationStatus {
+        <<enumeration>>
+        success
+        error
+    }
+
+    User "1" --> "0..*" Snippet : owns
+    Snippet "1" --> "0..*" GeneratedTest : produces
+    GeneratedTest --> GenerationStatus : uses
+```
+---
 ```mermaid
 graph TD
     A[Frontend\nHTML/CSS/JS] -->|REST JSON| B[Backend\nFastAPI Python]
