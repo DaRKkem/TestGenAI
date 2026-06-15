@@ -1,4 +1,6 @@
 ```mermaid
+%%{init: {'theme': 'dark'}}%%
+
 sequenceDiagram
     actor Utilisateur
     participant Frontend
@@ -21,6 +23,8 @@ sequenceDiagram
 ```
 
 ```mermaid
+%%{init: {'theme': 'dark'}}%%
+
 sequenceDiagram
     actor Utilisateur
     participant Frontend
@@ -29,27 +33,34 @@ sequenceDiagram
     participant LLM as API LLM
 
     Utilisateur->>Frontend: Colle du code + clique Générer
-    Frontend->>Backend: POST /generate (code, langage, JWT)
-    Backend->>Backend: Vérifie token JWT
 
-    alt Langage Python
-        Backend->>Backend: Parse le code avec ast
-        Backend->>Backend: Extrait fonctions et signatures
-    else Autre langage
-        Backend->>LLM: Prompt 1 - génère un prompt d'analyse
-        LLM-->>Backend: Prompt structuré retourné
+    alt Token JWT absent ou expiré
+        Frontend-->>Utilisateur: Redirige vers /login
+    else Token valide
+        Frontend->>Backend: POST /generate (code, langage, JWT)
+        Backend->>Backend: Vérifie token JWT
+
+        alt Langage Python
+            Backend->>Backend: Parse le code avec ast
+            Backend->>Backend: Extrait fonctions et signatures
+        else Autre langage
+            Backend->>LLM: Prompt 1 - génère un prompt d'analyse
+            LLM-->>Backend: Prompt structuré retourné
+        end
+
+        Backend->>LLM: Envoie prompt + code au LLM
+        LLM-->>Backend: Tests unitaires générés
+        Backend->>Backend: Validation syntaxique du code reçu
+        Backend->>SQLite: Sauvegarde snippet + tests générés
+        SQLite-->>Backend: OK
+        Backend-->>Frontend: 200 OK + tests (JSON)
+        Frontend-->>Utilisateur: Affiche tests avec coloration syntaxique
     end
-
-    Backend->>LLM: Envoie prompt + code au LLM
-    LLM-->>Backend: Tests unitaires générés
-    Backend->>Backend: Validation syntaxique du code reçu
-    Backend->>SQLite: Sauvegarde snippet + tests générés
-    SQLite-->>Backend: OK
-    Backend-->>Frontend: 200 OK + tests (JSON)
-    Frontend-->>Utilisateur: Affiche tests avec coloration syntaxique
 ```
 
 ```mermaid
+%%{init: {'theme': 'dark'}}%%
+
 sequenceDiagram
     actor Utilisateur
     participant Frontend
