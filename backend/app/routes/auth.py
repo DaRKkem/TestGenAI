@@ -6,12 +6,13 @@ Handles user registration and login, returns a JWT token on success.
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 import os
+import re
 
 from app.models import User
 from app.main import get_db
@@ -40,6 +41,19 @@ router = APIRouter()
 class RegisterRequest(BaseModel):
     email: EmailStr
     password: str
+
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, v):
+        if len(v) < 12:
+            raise ValueError("Password must be at least 12 characters")
+        if not re.search(r"[A-Z]", v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not re.search(r"[0-9]", v):
+            raise ValueError("Password must contain at least one digit")
+        if not re.search(r"[^a-zA-Z0-9]", v):
+            raise ValueError("Password must contain at least one special character")
+        return v
 
 
 class TokenResponse(BaseModel):
