@@ -4,21 +4,21 @@ erDiagram
     USER ||--o{ SNIPPET : "soumet"
     SNIPPET ||--o{ GENERATED_TEST : "produit"
     USER {
-        int id PK
+        string id PK
         string email
         string hashed_password
         datetime created_at
     }
     SNIPPET {
-        int id PK
-        int user_id FK
+        string id PK
+        string user_id FK
         string language
         text source_code
         datetime submitted_at
     }
     GENERATED_TEST {
-        int id PK
-        int snippet_id FK
+        string id PK
+        string snippet_id FK
         text test_code
         string llm_provider
         string status
