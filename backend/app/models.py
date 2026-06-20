@@ -2,11 +2,10 @@
 Database models for TestGen AI.
 Defines the three core tables: User, Snippet, GeneratedTest.
 """
-
-from sqlalchemy import (
-    Column, Integer, String, Text, DateTime, ForeignKey, Enum
-)
+import uuid
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.dialects.sqlite import TEXT
 from datetime import datetime, timezone
 import enum
 
@@ -19,6 +18,11 @@ class GenerationStatus(str, enum.Enum):
     error = "error"
 
 
+def generate_uuid():
+    """Generate a random UUID4 string, used as primary key for all tables."""
+    return str(uuid.uuid4())
+
+
 class User(Base):
     """
     Stores registered users.
@@ -27,7 +31,7 @@ class User(Base):
     """
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(TEXT, primary_key=True, default=generate_uuid)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
@@ -43,8 +47,8 @@ class Snippet(Base):
     """
     __tablename__ = "snippets"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    id = Column(TEXT, primary_key=True, default=generate_uuid)
+    user_id = Column(TEXT, ForeignKey("users.id"), nullable=False)
     language = Column(String, nullable=False)        # e.g. "python", "javascript"
     source_code = Column(Text, nullable=False)
     submitted_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
@@ -62,8 +66,8 @@ class GeneratedTest(Base):
     """
     __tablename__ = "generated_tests"
 
-    id = Column(Integer, primary_key=True, index=True)
-    snippet_id = Column(Integer, ForeignKey("snippets.id"), nullable=False)
+    id = Column(TEXT, primary_key=True, default=generate_uuid)
+    snippet_id = Column(TEXT, ForeignKey("snippets.id"), nullable=False)
     test_code = Column(Text, nullable=True)          # null if generation failed
     llm_provider = Column(String, nullable=False)    # "mistral" | "groq" | "openai"
     status = Column(Enum(GenerationStatus), nullable=False, default=GenerationStatus.success)
