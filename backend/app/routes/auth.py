@@ -45,15 +45,18 @@ class RegisterRequest(BaseModel):
     @field_validator("password")
     @classmethod
     def validate_password(cls, v):
+        errors = []
         if len(v) < 12:
-            raise ValueError("Password must be at least 12 characters")
+            errors.append("au moins 12 caractères")
         if not re.search(r"[A-Z]", v):
-            raise ValueError("Password must contain at least one uppercase letter")
+            errors.append("une majuscule")
         if not re.search(r"[0-9]", v):
-            raise ValueError("Password must contain at least one digit")
+            errors.append("un chiffre")
         if not re.search(r"[^a-zA-Z0-9]", v):
-            raise ValueError("Password must contain at least one special character")
-        return v
+            errors.append("un caractère spécial")
+        if errors:
+            raise ValueError("Le mot de passe doit contenir : " + ", ".join(errors))
+        return v    
 
 
 class TokenResponse(BaseModel):
@@ -62,7 +65,7 @@ class TokenResponse(BaseModel):
 
 
 class UserResponse(BaseModel):
-    id: int
+    id: str
     email: str
 
     class Config:
@@ -82,7 +85,7 @@ def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
 
 
-def create_access_token(user_id: int) -> str:
+def create_access_token(user_id: str) -> str:
     """
     Generate a signed JWT token containing the user ID.
     Expires after ACCESS_TOKEN_EXPIRE_MINUTES minutes.
@@ -113,7 +116,7 @@ def get_current_user(
     except JWTError:
         raise credentials_exception
 
-    user = db.query(User).filter(User.id == int(user_id)).first()
+    user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise credentials_exception
     return user
