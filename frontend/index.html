@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestGen AI</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="assets/favicon.ico" />
+
+  <!-- highlight.js: syntax highlighting for the generated test output -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+</head>
+<body>
+
+  <!-- Top navigation bar — hidden on the auth view -->
+  <header id="navbar" class="navbar hidden">
+    <div class="navbar-left">
+      <img src="assets/TestGenAI.png" alt="TestGen AI" class="logo-dot" />
+      <span class="navbar-title">TestGen AI</span>
+      <nav class="navbar-tabs">
+        <button class="tab-btn" data-route="editor">Éditeur</button>
+        <button class="tab-btn" data-route="history">Historique</button>
+      </nav>
+    </div>
+    <div class="navbar-right">
+      <button id="logout-btn" class="icon-btn" title="Se déconnecter">⏻</button>
+      <div class="avatar" id="user-avatar">--</div>
+    </div>
+  </header>
+
+  <main id="app">
+
+    <!-- ===================== AUTH VIEW ===================== -->
+    <section id="view-auth" class="view">
+      <div class="auth-card">
+        <div class="brand-pill">
+          <img src="assets/TestGenAI.png" alt="TestGen AI" class="logo-dot" /> TestGen AI
+        </div>
+        <h1 class="auth-title">Bienvenue</h1>
+        <p class="auth-subtitle">Générez des tests unitaires en secondes</p>
+
+        <div class="segmented" role="tablist">
+          <button class="segmented-btn active" data-tab="login" role="tab">Connexion</button>
+          <button class="segmented-btn" data-tab="register" role="tab">Inscription</button>
+        </div>
+
+        <p id="auth-error" class="form-error hidden"></p>
+
+        <!-- Login form -->
+        <form id="login-form" class="auth-form">
+          <label class="field-label" for="login-email">EMAIL</label>
+          <input class="field-input" type="email" id="login-email" placeholder="vous@exemple.com" required />
+
+          <label class="field-label" for="login-password">MOT DE PASSE</label>
+          <input class="field-input" type="password" id="login-password" placeholder="••••••••" required />
+
+          <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+
+          <button type="submit" class="btn btn-primary btn-block" id="login-submit">Se connecter</button>
+        </form>
+
+        <!-- Register form (hidden by default) -->
+        <form id="register-form" class="auth-form hidden">
+          <label class="field-label" for="register-email">EMAIL</label>
+          <input class="field-input" type="email" id="register-email" placeholder="vous@exemple.com" required />
+
+          <label class="field-label" for="register-password">MOT DE PASSE</label>
+          <input class="field-input" type="password" id="register-password" placeholder="12 caractères min." required />
+          <p class="field-hint">Min. 12 caractères, 1 majuscule, 1 chiffre, 1 caractère spécial.</p>
+
+          <label class="field-label" for="register-password-confirm">CONFIRMER LE MOT DE PASSE</label>
+          <input class="field-input" type="password" id="register-password-confirm" placeholder="••••••••" required />
+
+          <button type="submit" class="btn btn-primary btn-block" id="register-submit">Créer un compte</button>
+        </form>
+
+        <div class="divider"><span>ou</span></div>
+
+        <button class="btn btn-outline btn-block" id="github-btn" disabled title="Bientôt disponible">
+          Continuer avec GitHub
+        </button>
+
+        <p class="auth-switch">
+          <span id="switch-to-register-wrap">Pas encore de compte ? <a href="#" id="switch-to-register">Créer un compte</a></span>
+          <span id="switch-to-login-wrap" class="hidden">Déjà un compte ? <a href="#" id="switch-to-login">Se connecter</a></span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== EDITOR VIEW ===================== -->
+    <section id="view-editor" class="view hidden">
+      <div class="editor-grid">
+
+        <!-- Left panel: source code input -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">CODE SOURCE</span>
+            <div class="panel-actions">
+              <select id="language-select" class="select-input">
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+                <option value="java">Java</option>
+                <option value="c">C</option>
+                <option value="go">Go</option>
+                <option value="ruby">Ruby</option>
+              </select>
+              <label class="btn btn-ghost" for="file-upload">Upload</label>
+              <input type="file" id="file-upload" accept=".py,.js,.java,.c,.rb,.go,.txt" hidden />
+            </div>
+          </div>
+          <div class="code-editor">
+            <div class="line-numbers" id="source-line-numbers">1</div>
+            <textarea id="source-code" class="code-input" spellcheck="false"
+              placeholder="Collez votre code ici, ou utilisez le bouton Upload..."></textarea>
+          </div>
+        </div>
+
+        <!-- Right panel: generated tests output -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">
+              TESTS GÉNÉRÉS
+              <span id="provider-badge" class="badge hidden"></span>
+            </span>
+            <div class="panel-actions">
+              <button class="btn btn-ghost" id="copy-btn" disabled>Copier</button>
+              <button class="btn btn-ghost" id="download-btn" disabled>Télécharger</button>
+            </div>
+          </div>
+          <div class="code-editor">
+            <div class="line-numbers" id="output-line-numbers"></div>
+            <pre id="output-pre" class="code-output"><code id="output-code" class="hljs"></code></pre>
+            <div id="output-placeholder" class="code-placeholder">
+              Les tests générés apparaîtront ici.
+            </div>
+            <div id="output-loading" class="code-loading hidden">
+              <span class="spinner"></span> Génération en cours...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-actions">
+        <button class="btn btn-primary btn-wide" id="generate-btn">Générer les tests</button>
+        <button class="btn btn-outline btn-wide" id="run-btn" disabled title="Disponible en Post-MVP">
+          Exécuter les tests
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================== HISTORY VIEW ===================== -->
+    <section id="view-history" class="view hidden">
+      <div class="history-layout">
+
+        <div class="panel history-list-panel">
+          <div class="panel-header">
+            <span class="panel-title">HISTORIQUE</span>
+          </div>
+          <div id="history-empty" class="code-placeholder hidden">
+            Aucune génération pour l'instant.
+          </div>
+          <table class="history-table" id="history-table">
+            <thead>
+              <tr>
+                <th>Langage</th>
+                <th>Fournisseur</th>
+                <th>Statut</th>
+                <th>Date</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="history-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="panel history-detail-panel" id="history-detail-panel">
+          <div class="panel-header">
+            <span class="panel-title">DÉTAIL</span>
+            <div class="panel-actions">
+              <button class="btn btn-ghost" id="history-download-btn" disabled>Télécharger</button>
+              <button class="btn btn-danger-ghost" id="history-delete-btn" disabled>Supprimer</button>
+            </div>
+          </div>
+          <div id="history-detail-placeholder" class="code-placeholder">
+            Sélectionnez une entrée pour voir le détail.
+          </div>
+          <div id="history-detail-content" class="hidden">
+            <p class="detail-label">CODE SOURCE</p>
+            <pre class="code-output detail-block"><code id="history-source-code"></code></pre>
+            <p class="detail-label">TESTS GÉNÉRÉS</p>
+            <pre class="code-output detail-block"><code id="history-test-code"></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Status bar — VS Code style, hidden on the auth view -->
+  <footer id="statusbar" class="statusbar hidden">
+    <span id="status-msg">Prêt</span>
+    <span class="status-sep">·</span>
+    <span id="status-lang">Python 3.12</span>
+    <span class="status-sep">·</span>
+    <span>SQLite</span>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
