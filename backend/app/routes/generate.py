@@ -14,7 +14,9 @@ from app.routes.auth import get_current_user, User
 from app.services.llm import generate_tests
 
 router = APIRouter()
-
+# Normalize source code for deduplication
+def _normalize(code: str) -> str:
+    return "\n".join(line.rstrip() for line in code.strip().splitlines() if line.strip())
 
 # ---------------------------------------------------------------------------
 # Pydantic schemas
@@ -48,12 +50,38 @@ async def generate(
     3. Saves the generated tests to DB.
     4. Returns the test code and metadata.
     """
-
+    # Check if identical code was already generated successfully for this user
+    normalized_code = _normalize(payload.source_code)
+    existing_snippet = (
+        db.query(Snippet)
+        .filter(
+            Snippet.user_id == current_user.id,
+            Snippet.language == payload.language.lower(),
+            Snippet.source_code == normalized_code
+        )
+        .first()
+    )
+    if existing_snippet:
+        existing_test = (
+            db.query(GeneratedTest)
+            .filter(
+                GeneratedTest.snippet_id == existing_snippet.id,
+                GeneratedTest.status == GenerationStatus.success
+            )
+            .first()
+        )
+        if existing_test:
+            return GenerateResponse(
+                test_code=existing_test.test_code,
+                snippet_id=existing_snippet.id,
+                llm_provider=existing_test.llm_provider,
+                status="success"
+            )
     # Save the submitted snippet
     snippet = Snippet(
         user_id=current_user.id,
         language=payload.language.lower(),
-        source_code=payload.source_code
+        source_code=normalized_code
     )
     db.add(snippet)
     db.commit()
