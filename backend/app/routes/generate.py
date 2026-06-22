@@ -27,7 +27,7 @@ class GenerateRequest(BaseModel):
 
 class GenerateResponse(BaseModel):
     test_code: str
-    snippet_id: int
+    snippet_id: str
     llm_provider: str
     status: str
 

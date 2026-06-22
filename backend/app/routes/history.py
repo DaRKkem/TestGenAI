@@ -23,8 +23,8 @@ router = APIRouter()
 # Pydantic schemas
 # ---------------------------------------------------------------------------
 class HistoryItemResponse(BaseModel):
-    id: int                  # GeneratedTest id
-    snippet_id: int
+    id: str                  # GeneratedTest id
+    snippet_id: str
     language: str
     llm_provider: str
     status: str
@@ -35,8 +35,8 @@ class HistoryItemResponse(BaseModel):
 
 
 class HistoryDetailResponse(BaseModel):
-    id: int
-    snippet_id: int
+    id: str
+    snippet_id: str
     language: str
     source_code: str
     test_code: Optional[str]
@@ -83,7 +83,7 @@ def get_history(
 
 @router.get("/{id}", response_model=HistoryDetailResponse)
 def get_history_detail(
-    id: int,
+    id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -113,7 +113,7 @@ def get_history_detail(
 
 @router.get("/download/{id}")
 def download_test(
-    id: int,
+    id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -146,7 +146,7 @@ def download_test(
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_history_entry(
-    id: int,
+    id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
