@@ -58,15 +58,15 @@ const Api = {
       if (!path.startsWith("/auth/")) {
         this.clearSession();
         if (window.App) window.App.navigate("auth");
-        throw new Error("Session expirée, merci de vous reconnecter.");
+        throw new Error("Session expired, please sign in again.");
       }
       // Let auth routes throw their own error message from the response body
       const data = await response.json();
-      throw new Error(typeof data.detail === "string" ? data.detail : "Identifiants incorrects.");
+      throw new Error(typeof data.detail === "string" ? data.detail : "Invalid credentials.");
     }
 
     if (!response.ok) {
-      let detail = `Erreur ${response.status}`;
+      let detail = `Error ${response.status}`;
       try {
         const data = await response.json();
         if (Array.isArray(data.detail)) {
@@ -146,7 +146,7 @@ const Api = {
     const response = await fetch(`${API_BASE}/history/download/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    if (!response.ok) throw new Error("Téléchargement impossible.");
+    if (!response.ok) throw new Error("Download failed.");
 
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);

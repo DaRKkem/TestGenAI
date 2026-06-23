@@ -31,7 +31,7 @@ const History = {
       const items = await Api.getHistory();
       this._renderList(items);
     } catch (err) {
-      window.App.setStatus(err.message || "Impossible de charger l'historique");
+      window.App.setStatus(err.message || "Could not load history");
     }
   },
 
@@ -56,7 +56,7 @@ const History = {
       tr.dataset.id = item.id;
 
       const statusClass = item.status === "success" ? "success" : "error";
-      const date = new Date(item.generated_at).toLocaleString("fr-FR", {
+      const date = new Date(item.generated_at).toLocaleString("en-US", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
@@ -88,7 +88,7 @@ const History = {
       const detail = await Api.getHistoryDetail(id);
       this._renderDetail(detail);
     } catch (err) {
-      window.App.setStatus(err.message || "Impossible de charger le détail");
+      window.App.setStatus(err.message || "Could not load details");
     }
   },
 
@@ -103,7 +103,7 @@ const History = {
       : "hljs";
     hljs.highlightElement(this._sourceCodeEl);
 
-    this._testCodeEl.textContent = detail.test_code || "(Aucun test — la génération a échoué)";
+    this._testCodeEl.textContent = detail.test_code || "(No tests — generation failed)";
     this._testCodeEl.className = ["python", "javascript"].includes(detail.language)
       ? `hljs language-${detail.language}`
       : "hljs";
@@ -138,21 +138,21 @@ const History = {
     try {
       await Api.downloadTest(this._selectedId, `test_snippet_${this._selectedId}.${ext}`);
     } catch (err) {
-      window.App.setStatus(err.message || "Téléchargement impossible");
+      window.App.setStatus(err.message || "Download failed");
     }
   },
 
   async _handleDelete() {
     if (!this._selectedId) return;
-    const confirmed = confirm("Supprimer définitivement cette entrée ?");
+    const confirmed = confirm("Delete this entry permanently?");
     if (!confirmed) return;
 
     try {
       await Api.deleteHistoryEntry(this._selectedId);
-      window.App.setStatus("Entrée supprimée");
+      window.App.setStatus("Entry deleted");
       await this.load();
     } catch (err) {
-      window.App.setStatus(err.message || "Suppression impossible");
+      window.App.setStatus(err.message || "Delete failed");
     }
   },
 

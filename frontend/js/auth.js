@@ -11,7 +11,7 @@ const Auth = {
   },
 
   // -------------------------------------------------------------------
-  // Connexion / Inscription tab toggle
+  // Sign in / Sign up tab toggle
   // -------------------------------------------------------------------
   _wireTabSwitch() {
     const loginTab = document.querySelector('.segmented-btn[data-tab="login"]');
@@ -79,15 +79,15 @@ const Auth = {
     const btn = document.getElementById("login-submit");
 
     this._clearError();
-    this._setLoading(btn, true, "Connexion...");
+    this._setLoading(btn, true, "Signing in...");
 
     try {
       await Api.login(email, password);
       window.App.onAuthenticated();
     } catch (err) {
-      this._showError(err.message || "Identifiants incorrects.");
+      this._showError(err.message || "Invalid credentials.");
     } finally {
-      this._setLoading(btn, false, "Se connecter");
+      this._setLoading(btn, false, "Sign in");
     }
   },
 
@@ -100,11 +100,11 @@ const Auth = {
     this._clearError();
 
     if (password !== confirm) {
-      this._showError("Les mots de passe ne correspondent pas.");
+      this._showError("Passwords do not match.");
       return;
     }
 
-    this._setLoading(btn, true, "Création...");
+    this._setLoading(btn, true, "Creating...");
 
     try {
       await Api.register(email, password);
@@ -112,9 +112,9 @@ const Auth = {
       await Api.login(email, password);
       window.App.onAuthenticated();
     } catch (err) {
-      this._showError(err.message || "Inscription impossible.");
+      this._showError(err.message || "Registration failed.");
     } finally {
-      this._setLoading(btn, false, "Créer un compte");
+      this._setLoading(btn, false, "Create account");
     }
   },
 

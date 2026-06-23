@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,12 +21,12 @@
       <img src="assets/TestGenAI.png" alt="TestGen AI" class="logo-dot" />
       <span class="navbar-title">TestGen AI</span>
       <nav class="navbar-tabs">
-        <button class="tab-btn" data-route="editor">Éditeur</button>
-        <button class="tab-btn" data-route="history">Historique</button>
+        <button class="tab-btn" data-route="editor">Editor</button>
+        <button class="tab-btn" data-route="history">History</button>
       </nav>
     </div>
     <div class="navbar-right">
-      <button id="logout-btn" class="icon-btn" title="Se déconnecter">⏻</button>
+      <button id="logout-btn" class="icon-btn" title="Sign out">⏻</button>
       <div class="avatar" id="user-avatar">--</div>
     </div>
   </header>
@@ -39,12 +39,12 @@
         <div class="brand-pill">
           <img src="assets/TestGenAI.png" alt="TestGen AI" class="logo-dot" /> TestGen AI
         </div>
-        <h1 class="auth-title">Bienvenue</h1>
-        <p class="auth-subtitle">Générez des tests unitaires en secondes</p>
+        <h1 class="auth-title">Welcome</h1>
+        <p class="auth-subtitle">Generate unit tests in seconds</p>
 
         <div class="segmented" role="tablist">
-          <button class="segmented-btn active" data-tab="login" role="tab">Connexion</button>
-          <button class="segmented-btn" data-tab="register" role="tab">Inscription</button>
+          <button class="segmented-btn active" data-tab="login" role="tab">Sign in</button>
+          <button class="segmented-btn" data-tab="register" role="tab">Sign up</button>
         </div>
 
         <p id="auth-error" class="form-error hidden"></p>
@@ -52,40 +52,40 @@
         <!-- Login form -->
         <form id="login-form" class="auth-form">
           <label class="field-label" for="login-email">EMAIL</label>
-          <input class="field-input" type="email" id="login-email" placeholder="vous@exemple.com" required />
+          <input class="field-input" type="email" id="login-email" placeholder="you@example.com" required />
 
-          <label class="field-label" for="login-password">MOT DE PASSE</label>
+          <label class="field-label" for="login-password">PASSWORD</label>
           <input class="field-input" type="password" id="login-password" placeholder="••••••••" required />
 
-          <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+          <a href="#" class="forgot-link">Forgot password?</a>
 
-          <button type="submit" class="btn btn-primary btn-block" id="login-submit">Se connecter</button>
+          <button type="submit" class="btn btn-primary btn-block" id="login-submit">Sign in</button>
         </form>
 
         <!-- Register form (hidden by default) -->
         <form id="register-form" class="auth-form hidden">
           <label class="field-label" for="register-email">EMAIL</label>
-          <input class="field-input" type="email" id="register-email" placeholder="vous@exemple.com" required />
+          <input class="field-input" type="email" id="register-email" placeholder="you@example.com" required />
 
-          <label class="field-label" for="register-password">MOT DE PASSE</label>
-          <input class="field-input" type="password" id="register-password" placeholder="12 caractères min." required />
-          <p class="field-hint">Min. 12 caractères, 1 majuscule, 1 chiffre, 1 caractère spécial.</p>
+          <label class="field-label" for="register-password">PASSWORD</label>
+          <input class="field-input" type="password" id="register-password" placeholder="12 characters min." required />
+          <p class="field-hint">Min. 12 characters, 1 uppercase, 1 number, 1 special character.</p>
 
-          <label class="field-label" for="register-password-confirm">CONFIRMER LE MOT DE PASSE</label>
+          <label class="field-label" for="register-password-confirm">CONFIRM PASSWORD</label>
           <input class="field-input" type="password" id="register-password-confirm" placeholder="••••••••" required />
 
-          <button type="submit" class="btn btn-primary btn-block" id="register-submit">Créer un compte</button>
+          <button type="submit" class="btn btn-primary btn-block" id="register-submit">Create account</button>
         </form>
 
-        <div class="divider"><span>ou</span></div>
+        <div class="divider"><span>or</span></div>
 
-        <button class="btn btn-outline btn-block" id="github-btn" disabled title="Bientôt disponible">
-          Continuer avec GitHub
+        <button class="btn btn-outline btn-block" id="github-btn" disabled title="Coming soon">
+          Continue with GitHub
         </button>
 
         <p class="auth-switch">
-          <span id="switch-to-register-wrap">Pas encore de compte ? <a href="#" id="switch-to-register">Créer un compte</a></span>
-          <span id="switch-to-login-wrap" class="hidden">Déjà un compte ? <a href="#" id="switch-to-login">Se connecter</a></span>
+          <span id="switch-to-register-wrap">No account yet? <a href="#" id="switch-to-register">Create one</a></span>
+          <span id="switch-to-login-wrap" class="hidden">Already have an account? <a href="#" id="switch-to-login">Sign in</a></span>
         </p>
       </div>
     </section>
@@ -97,7 +97,7 @@
         <!-- Left panel: source code input -->
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">CODE SOURCE</span>
+            <span class="panel-title">SOURCE CODE</span>
             <div class="panel-actions">
               <select id="language-select" class="select-input">
                 <option value="python">Python</option>
@@ -114,7 +114,7 @@
           <div class="code-editor">
             <div class="line-numbers" id="source-line-numbers">1</div>
             <textarea id="source-code" class="code-input" spellcheck="false"
-              placeholder="Collez votre code ici, ou utilisez le bouton Upload..."></textarea>
+              placeholder="Paste your code here, or use the Upload button..."></textarea>
           </div>
         </div>
 
@@ -122,31 +122,31 @@
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title">
-              TESTS GÉNÉRÉS
+              GENERATED TESTS
               <span id="provider-badge" class="badge hidden"></span>
             </span>
             <div class="panel-actions">
-              <button class="btn btn-ghost" id="copy-btn" disabled>Copier</button>
-              <button class="btn btn-ghost" id="download-btn" disabled>Télécharger</button>
+              <button class="btn btn-ghost" id="copy-btn" disabled>Copy</button>
+              <button class="btn btn-ghost" id="download-btn" disabled>Download</button>
             </div>
           </div>
           <div class="code-editor">
             <div class="line-numbers" id="output-line-numbers"></div>
             <pre id="output-pre" class="code-output"><code id="output-code" class="hljs"></code></pre>
             <div id="output-placeholder" class="code-placeholder">
-              Les tests générés apparaîtront ici.
+              Generated tests will appear here.
             </div>
             <div id="output-loading" class="code-loading hidden">
-              <span class="spinner"></span> Génération en cours...
+              <span class="spinner"></span> Generating...
             </div>
           </div>
         </div>
       </div>
 
       <div class="editor-actions">
-        <button class="btn btn-primary btn-wide" id="generate-btn">Générer les tests</button>
-        <button class="btn btn-outline btn-wide" id="run-btn" disabled title="Disponible en Post-MVP">
-          Exécuter les tests
+        <button class="btn btn-primary btn-wide" id="generate-btn">Generate tests</button>
+        <button class="btn btn-outline btn-wide" id="run-btn" disabled title="Available post-MVP">
+          Run tests
         </button>
       </div>
     </section>
@@ -157,17 +157,17 @@
 
         <div class="panel history-list-panel">
           <div class="panel-header">
-            <span class="panel-title">HISTORIQUE</span>
+            <span class="panel-title">HISTORY</span>
           </div>
           <div id="history-empty" class="code-placeholder hidden">
-            Aucune génération pour l'instant.
+            No generations yet.
           </div>
           <table class="history-table" id="history-table">
             <thead>
               <tr>
-                <th>Langage</th>
-                <th>Fournisseur</th>
-                <th>Statut</th>
+                <th>Language</th>
+                <th>Provider</th>
+                <th>Status</th>
                 <th>Date</th>
                 <th></th>
               </tr>
@@ -178,19 +178,19 @@
 
         <div class="panel history-detail-panel" id="history-detail-panel">
           <div class="panel-header">
-            <span class="panel-title">DÉTAIL</span>
+            <span class="panel-title">DETAIL</span>
             <div class="panel-actions">
-              <button class="btn btn-ghost" id="history-download-btn" disabled>Télécharger</button>
-              <button class="btn btn-danger-ghost" id="history-delete-btn" disabled>Supprimer</button>
+              <button class="btn btn-ghost" id="history-download-btn" disabled>Download</button>
+              <button class="btn btn-danger-ghost" id="history-delete-btn" disabled>Delete</button>
             </div>
           </div>
           <div id="history-detail-placeholder" class="code-placeholder">
-            Sélectionnez une entrée pour voir le détail.
+            Select an entry to view details.
           </div>
           <div id="history-detail-content" class="hidden">
-            <p class="detail-label">CODE SOURCE</p>
+            <p class="detail-label">SOURCE CODE</p>
             <pre class="code-output detail-block"><code id="history-source-code"></code></pre>
-            <p class="detail-label">TESTS GÉNÉRÉS</p>
+            <p class="detail-label">GENERATED TESTS</p>
             <pre class="code-output detail-block"><code id="history-test-code"></code></pre>
           </div>
         </div>
@@ -201,7 +201,7 @@
 
   <!-- Status bar — VS Code style, hidden on the auth view -->
   <footer id="statusbar" class="statusbar hidden">
-    <span id="status-msg">Prêt</span>
+    <span id="status-msg">Ready</span>
     <span class="status-sep">·</span>
     <span id="status-lang">Python 3.12</span>
     <span class="status-sep">·</span>

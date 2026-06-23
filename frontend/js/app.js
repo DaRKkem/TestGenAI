@@ -87,7 +87,7 @@ const App = {
       History.load();
     }
 
-    this.setStatus("Prêt");
+    this.setStatus("Ready");
   },
 
   // -------------------------------------------------------------------

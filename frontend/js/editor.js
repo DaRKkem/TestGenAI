@@ -80,12 +80,12 @@ const Editor = {
     const language = this._languageSelect.value;
 
     if (!sourceCode) {
-      window.App.setStatus("Aucun code à analyser.");
+      window.App.setStatus("No code to analyze.");
       return;
     }
 
     this._setLoadingState(true);
-    window.App.setStatus("Génération en cours...");
+    window.App.setStatus("Generating...");
 
     try {
       const result = await Api.generateTests(sourceCode, language);
@@ -95,9 +95,9 @@ const Editor = {
       this._providerBadge.classList.remove("hidden");
       this._copyBtn.disabled = false;
       this._downloadBtn.disabled = false;
-      window.App.setStatus("Tests générés avec succès");
+      window.App.setStatus("Tests generated successfully");
     } catch (err) {
-      window.App.setStatus(err.message || "Échec de la génération");
+      window.App.setStatus(err.message || "Generation failed");
     } finally {
       this._setLoadingState(false);
     }
@@ -105,7 +105,7 @@ const Editor = {
 
   _setLoadingState(isLoading) {
     this._generateBtn.disabled = isLoading;
-    this._generateBtn.textContent = isLoading ? "Génération..." : "Générer les tests";
+    this._generateBtn.textContent = isLoading ? "Generating..." : "Generate tests";
     this._loading.classList.toggle("hidden", !isLoading);
     if (isLoading) this._placeholder.classList.add("hidden");
   },
@@ -141,9 +141,9 @@ const Editor = {
       if (!this._lastResult || this._copyBtn.dataset.copying) return;
       this._copyBtn.dataset.copying = "1";
       await navigator.clipboard.writeText(this._lastResult.test_code);
-      this._copyBtn.textContent = "Copié !";
+      this._copyBtn.textContent = "Copied!";
       setTimeout(() => {
-        this._copyBtn.textContent = "Copier";
+        this._copyBtn.textContent = "Copy";
         delete this._copyBtn.dataset.copying;
       }, 1500);
     });
