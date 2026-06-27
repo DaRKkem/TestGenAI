@@ -55,7 +55,12 @@
           <input class="field-input" type="email" id="login-email" placeholder="you@example.com" required />
 
           <label class="field-label" for="login-password">PASSWORD</label>
-          <input class="field-input" type="password" id="login-password" placeholder="••••••••" required />
+          <div class="field-input-wrap">
+            <input class="field-input" type="password" id="login-password" placeholder="••••••••" required />
+            <button type="button" class="eye-btn" data-target="login-password">
+              <img src="assets/hide.png" alt="show" class="eye-icon" />
+            </button>
+          </div>
 
           <a href="#" class="forgot-link">Forgot password?</a>
 
@@ -68,11 +73,21 @@
           <input class="field-input" type="email" id="register-email" placeholder="you@example.com" required />
 
           <label class="field-label" for="register-password">PASSWORD</label>
-          <input class="field-input" type="password" id="register-password" placeholder="12 characters min." required />
+          <div class="field-input-wrap">
+            <input class="field-input" type="password" id="register-password" placeholder="••••••••" required />
+            <button type="button" class="eye-btn" data-target="register-password">
+              <img src="assets/hide.png" alt="show" class="eye-icon" />
+            </button>
+          </div>
           <p class="field-hint">Min. 12 characters, 1 uppercase, 1 number, 1 special character.</p>
 
           <label class="field-label" for="register-password-confirm">CONFIRM PASSWORD</label>
-          <input class="field-input" type="password" id="register-password-confirm" placeholder="••••••••" required />
+          <div class="field-input-wrap">
+            <input class="field-input" type="password" id="register-password-confirm" placeholder="••••••••" required />
+            <button type="button" class="eye-btn" data-target="register-password-confirm">
+              <img src="assets/hide.png" alt="show" class="eye-icon" />
+            </button>
+          </div>
 
           <button type="submit" class="btn btn-primary btn-block" id="register-submit">Create account</button>
         </form>

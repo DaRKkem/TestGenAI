@@ -8,6 +8,7 @@ const Auth = {
   init() {
     this._wireTabSwitch();
     this._wireForms();
+    this._wireEyeBtns();
   },
 
   // -------------------------------------------------------------------
@@ -116,6 +117,17 @@ const Auth = {
     } finally {
       this._setLoading(btn, false, "Create account");
     }
+  },
+
+  _wireEyeBtns() {
+    document.querySelectorAll(".eye-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const input = document.getElementById(btn.dataset.target);
+        const icon = btn.querySelector(".eye-icon");
+        input.type = input.type === "password" ? "text" : "password";
+        icon.src = input.type === "password" ? "assets/hide.png" : "assets/show.png";
+      });
+    });
   },
 
   // -------------------------------------------------------------------
