@@ -56,12 +56,16 @@ const History = {
       tr.dataset.id = item.id;
 
       const statusClass = item.status === "success" ? "success" : "error";
-      const date = new Date(item.generated_at).toLocaleString("en-US", {
+      const d = new Date(item.generated_at);
+      const date = d.toLocaleDateString("fr-FR", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
+        timeZone: "Europe/Paris"
+      }) + "\u00A0\u00A0\u00A0\u00A0" + d.toLocaleTimeString("fr-FR", {
         hour: "2-digit",
         minute: "2-digit",
+        timeZone: "Europe/Paris"
       });
 
       tr.innerHTML = `
