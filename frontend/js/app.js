@@ -23,10 +23,13 @@ const App = {
     // Entry point: go straight to the editor if a valid session exists,
     // otherwise show the auth view.
     if (Api.isLoggedIn()) {
-      this.onAuthenticated();
+      const currentRoute = location.hash.replace("#/", "");
+      this.navigate(this._routes.includes(currentRoute) ? currentRoute : "editor");
     } else {
       this.navigate("auth");
     }
+
+      document.body.style.visibility = "visible";
   },
 
   // -------------------------------------------------------------------
@@ -60,8 +63,7 @@ const App = {
     const email = Api.getEmail() || "";
     this._avatar.textContent = email.slice(0, 2).toUpperCase() || "--";
 
-    const initialRoute = location.hash.replace("#/", "");
-    this.navigate(this._routes.includes(initialRoute) ? initialRoute : "editor");
+    this.navigate("editor");
   },
 
   // -------------------------------------------------------------------
