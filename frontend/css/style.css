@@ -428,7 +428,9 @@ body {
 }
 
 .btn-wide {
-  flex: 1;
+  flex: 0 0 auto;
+  width: 25%;
+  min-width: 160px;
 }
 
 /* =========================================================================
@@ -593,14 +595,15 @@ body {
 
 .editor-actions {
   display: flex;
-  gap: 12px;
-  justify-content: center;
+  gap: 0;
+  justify-content: space-around;
 }
 
 .btn-wide {
   flex: 0 0 auto;
   width: 25%;
-  min-width: 160px;
+  min-width: 200px;
+  max-width: 480px;
 }
 
 /* =========================================================================
@@ -689,7 +692,28 @@ body {
 }
 
 #history-detail-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.detail-pane {
   overflow: auto;
+  min-height: 80px;
+}
+
+.detail-divider {
+  height: 6px;
+  background: var(--border);
+  cursor: ns-resize;
+  flex-shrink: 0;
+  border-radius: 3px;
+  margin: 0 14px;
+}
+
+.detail-divider:hover, .detail-divider.dragging {
+  background: var(--accent);
 }
 
 /* =========================================================================

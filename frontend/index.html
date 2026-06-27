@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,11 +9,13 @@
   <link rel="icon" type="image/png" href="assets/favicon.ico" />
 
   <!-- highlight.js: syntax highlighting for the generated test output -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
 </head>
+
 <body>
 
   <!-- Top navigation bar — hidden on the auth view -->
@@ -100,7 +103,8 @@
 
         <p class="auth-switch">
           <span id="switch-to-register-wrap">No account yet? <a href="#" id="switch-to-register">Create one</a></span>
-          <span id="switch-to-login-wrap" class="hidden">Already have an account? <a href="#" id="switch-to-login">Sign in</a></span>
+          <span id="switch-to-login-wrap" class="hidden">Already have an account? <a href="#" id="switch-to-login">Sign
+              in</a></span>
         </p>
       </div>
     </section>
@@ -203,10 +207,15 @@
             Select an entry to view details.
           </div>
           <div id="history-detail-content" class="hidden">
-            <p class="detail-label">SOURCE CODE</p>
-            <pre class="code-output detail-block"><code id="history-source-code"></code></pre>
-            <p class="detail-label">GENERATED TESTS</p>
-            <pre class="code-output detail-block"><code id="history-test-code"></code></pre>
+            <div class="detail-pane" id="detail-pane-source">
+              <p class="detail-label">SOURCE CODE</p>
+              <pre class="code-output detail-block"><code id="history-source-code"></code></pre>
+            </div>
+            <div class="detail-divider" id="detail-divider"></div>
+            <div class="detail-pane" id="detail-pane-tests">
+              <p class="detail-label">GENERATED TESTS</p>
+              <pre class="code-output detail-block"><code id="history-test-code"></code></pre>
+            </div>
           </div>
         </div>
       </div>
@@ -229,4 +238,5 @@
   <script src="js/history.js"></script>
   <script src="js/app.js"></script>
 </body>
+
 </html>
