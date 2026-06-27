@@ -29,7 +29,7 @@ const App = {
       this.navigate("auth");
     }
 
-      document.body.style.visibility = "visible";
+    document.body.style.visibility = "visible";
   },
 
   // -------------------------------------------------------------------
@@ -45,6 +45,7 @@ const App = {
     document.getElementById("logout-btn").addEventListener("click", () => {
       Api.clearSession();
       Editor.reset();
+      location.hash = "";
       this.navigate("auth");
     });
   },

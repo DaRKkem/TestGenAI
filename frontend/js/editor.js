@@ -169,6 +169,8 @@ const Editor = {
   // -------------------------------------------------------------------
   reset() {
     this._lastResult = null;
+    this._sourceInput.value = "";
+    this._updateLineNumbers(this._sourceLineNumbers, "");
     this._outputCode.textContent = "";
     this._outputLineNumbers.textContent = "";
     this._placeholder.classList.remove("hidden");
