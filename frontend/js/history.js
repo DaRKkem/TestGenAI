@@ -20,6 +20,7 @@ const History = {
 
     this._downloadBtn.addEventListener("click", () => this._handleDownload());
     this._deleteBtn.addEventListener("click", () => this._handleDelete());
+    
   },
 
   // Called by the router every time the history view becomes active
