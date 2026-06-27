@@ -101,6 +101,8 @@ Rules:
 - Cover normal cases, edge cases, and error cases for each function
 - Import the functions properly at the top of the test file
 - Do not include any explanation, only return the test code
+- You MUST return only valid Python test code, absolutely no text, no explanation, no warning, no comment outside of the code
+- If the provided code is not Python, do your best to generate pytest tests anyway and return only the code
 
 Detected functions:
 {func_summary}
@@ -131,6 +133,8 @@ Source code:
 {source_code}
 ```
 
+- Do not mention any mismatch between the language label and the actual code
+- Analyze whatever code is provided regardless of what language it appears to be
 Return only a structured plain-text analysis, no code."""
 
 
@@ -149,6 +153,9 @@ Rules:
 - Cover all functions described in the analysis
 - Include normal cases, edge cases, and error cases
 - Do not include any explanation, only return the test code
+- You MUST return only valid test code, absolutely no text, no explanation, no warning, no preamble
+- If something seems inconsistent, ignore it and generate the best tests you can anyway
+- Your response must start directly with the first line of code
 
 Code analysis:
 {analysis}
