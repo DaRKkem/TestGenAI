@@ -40,11 +40,40 @@ const Editor = {
     this._sourceInput.addEventListener("scroll", () => {
       this._sourceLineNumbers.scrollTop = this._sourceInput.scrollTop;
     });
+    this._sourceInput.addEventListener("input", () => {
+      this._updateLineNumbers(this._sourceLineNumbers, this._sourceInput.value);
+      this._autoDetectLanguage();
+    });
   },
 
   _updateLineNumbers(el, text) {
     const lineCount = Math.max(1, text.split("\n").length);
     el.textContent = Array.from({ length: lineCount }, (_, i) => i + 1).join("\n");
+  },
+
+  // -------------------------------------------------------------------
+  // Language detection
+  // -------------------------------------------------------------------
+  _autoDetectLanguage() {
+    const code = this._sourceInput.value.trim();
+    if (!code || code.length < 30) return; // too short to detect reliably
+
+    const result = hljs.highlightAuto(code, [
+      "python", "javascript", "java", "c", "go", "ruby"
+    ]);
+
+    const langMap = {
+      python: "python",
+      javascript: "javascript",
+      java: "java",
+      c: "c",
+      go: "go",
+      ruby: "ruby",
+    };
+
+    if (result.language && langMap[result.language]) {
+      this._languageSelect.value = langMap[result.language];
+    }
   },
 
   // -------------------------------------------------------------------
