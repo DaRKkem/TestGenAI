@@ -21,6 +21,9 @@ const History = {
     this._downloadBtn.addEventListener("click", () => this._handleDownload());
     this._deleteBtn.addEventListener("click", () => this._handleDelete());
 
+    this._seeEditorBtn = document.getElementById("history-see-editor-btn");
+    this._seeEditorBtn.addEventListener("click", () => this._handleSeeInEditor());
+
     this._wireDivider();
   },
 
@@ -121,6 +124,7 @@ const History = {
     const hasTest = detail.status === "success" && detail.test_code;
     this._downloadBtn.disabled = !hasTest;
     this._deleteBtn.disabled = false;
+    this._seeEditorBtn.disabled = false;
   },
 
   _highlightSelectedRow(id) {
@@ -134,6 +138,7 @@ const History = {
     this._detailContent.classList.add("hidden");
     this._downloadBtn.disabled = true;
     this._deleteBtn.disabled = true;
+    this._seeEditorBtn.disabled = false;
   },
 
   // -------------------------------------------------------------------
@@ -163,6 +168,14 @@ const History = {
     } catch (err) {
       window.App.setStatus(err.message || "Delete failed");
     }
+  },
+
+  _handleSeeInEditor() {
+    if (!this._selectedId) return;
+    sessionStorage.setItem("editor_prefill_code", this._sourceCodeEl.textContent);
+    sessionStorage.setItem("editor_prefill_lang", this._selectedLanguage);
+    sessionStorage.setItem("editor_prefill_tests", this._testCodeEl.textContent);
+    window.App.navigate("editor");
   },
 
   // -------------------------------------------------------------------

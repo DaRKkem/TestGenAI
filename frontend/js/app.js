@@ -90,6 +90,10 @@ const App = {
       History.load();
     }
 
+    if (route === "editor") {
+      Editor.loadPrefill();
+    }
+
     this.setStatus("Ready");
   },
 

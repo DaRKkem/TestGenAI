@@ -31,6 +31,29 @@ const Editor = {
   },
 
   // -------------------------------------------------------------------
+  // Pre-fill from history
+  // -------------------------------------------------------------------
+  loadPrefill() {
+    const prefillCode = sessionStorage.getItem("editor_prefill_code");
+    const prefillLang = sessionStorage.getItem("editor_prefill_lang");
+    const prefillTests = sessionStorage.getItem("editor_prefill_tests");
+    if (!prefillCode) return;
+
+    this._sourceInput.value = prefillCode;
+    this._updateLineNumbers(this._sourceLineNumbers, prefillCode);
+    if (prefillLang) this._languageSelect.value = prefillLang;
+    if (prefillTests && prefillTests !== "(No tests — generation failed)") {
+      this._renderOutput(prefillTests, prefillLang || "python");
+      this._copyBtn.disabled = false;
+      this._downloadBtn.disabled = false;
+    }
+
+    sessionStorage.removeItem("editor_prefill_code");
+    sessionStorage.removeItem("editor_prefill_lang");
+    sessionStorage.removeItem("editor_prefill_tests");
+  },
+
+  // -------------------------------------------------------------------
   // Line numbers (source editor)
   // -------------------------------------------------------------------
   _wireSourceLineNumbers() {
