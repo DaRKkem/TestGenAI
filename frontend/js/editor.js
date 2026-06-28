@@ -59,16 +59,21 @@ const Editor = {
     if (!code || code.length < 30) return; // too short to detect reliably
 
     const result = hljs.highlightAuto(code, [
-      "python", "javascript", "java", "c", "go", "ruby"
+      "python", "javascript", "typescript", "java", "c", "cpp",
+      "csharp", "go", "ruby", "rust"
     ]);
 
     const langMap = {
       python: "python",
       javascript: "javascript",
+      typescript: "typescript",
       java: "java",
       c: "c",
+      cpp: "cpp",
+      csharp: "csharp",
       go: "go",
       ruby: "ruby",
+      rust: "rust",
     };
 
     if (result.language && langMap[result.language]) {
