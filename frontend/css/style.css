@@ -433,6 +433,27 @@ body {
   min-width: 160px;
 }
 
+.code-scroll-wrap {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+  background: var(--bg-input);
+}
+
+.code-scroll-wrap pre {
+  margin: 0;
+  padding: 12px;
+  min-width: max-content;
+  background: transparent;
+  line-height: 20px;
+}
+
+.code-scroll-wrap code {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  background: transparent !important;
+}
+
 /* =========================================================================
    Editor view
    ========================================================================= */
@@ -549,12 +570,16 @@ body {
   background: var(--bg-input) !important;
   overflow: auto;
   line-height: 20px;
+  min-height: 0;
 }
+
 
 .code-output code {
   font-family: var(--font-mono);
   font-size: 16px;
   background: transparent !important;
+  display: block;
+  white-space: pre;
 }
 
 .code-placeholder {
@@ -612,6 +637,7 @@ body {
 
 #view-history {
   padding: 16px;
+  overflow: hidden;
 }
 
 .history-layout {
@@ -691,29 +717,48 @@ body {
   overflow: auto;
 }
 
+.history-detail-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  flex: 1;
+}
+
 #history-detail-content {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
-.detail-pane {
-  overflow: auto;
-  min-height: 80px;
-}
-
 .detail-divider {
+  margin: 8px 48px;
   height: 6px;
   background: var(--border);
   cursor: ns-resize;
   flex-shrink: 0;
   border-radius: 3px;
-  margin: 0 14px;
 }
 
 .detail-divider:hover, .detail-divider.dragging {
   background: var(--accent);
+}
+
+.detail-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.detail-pane > .detail-block {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
 }
 
 /* =========================================================================

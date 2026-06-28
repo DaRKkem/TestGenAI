@@ -20,7 +20,8 @@ const History = {
 
     this._downloadBtn.addEventListener("click", () => this._handleDownload());
     this._deleteBtn.addEventListener("click", () => this._handleDelete());
-    
+
+    this._wireDivider();
   },
 
   // Called by the router every time the history view becomes active
@@ -102,17 +103,20 @@ const History = {
     this._detailPlaceholder.classList.add("hidden");
     this._detailContent.classList.remove("hidden");
 
-    this._sourceCodeEl.textContent = detail.source_code;
-    this._sourceCodeEl.className = ["python", "javascript"].includes(detail.language)
-      ? `hljs language-${detail.language}`
-      : "hljs";
-    hljs.highlightElement(this._sourceCodeEl);
+    this._highlightCode(this._sourceCodeEl, detail.source_code, detail.language);
 
-    this._testCodeEl.textContent = detail.test_code || "(No tests — generation failed)";
-    this._testCodeEl.className = ["python", "javascript"].includes(detail.language)
-      ? `hljs language-${detail.language}`
-      : "hljs";
-    hljs.highlightElement(this._testCodeEl);
+    if (detail.status === "success" && detail.test_code) {
+      this._highlightCode(this._testCodeEl, detail.test_code, detail.language);
+    } else {
+      this._testCodeEl.innerHTML = "";
+      this._testCodeEl.textContent = "(No tests — generation failed)";
+      this._testCodeEl.className = "hljs";
+    }
+
+    requestAnimationFrame(() => {
+      const divider = document.getElementById("detail-divider");
+      if (divider) divider.dispatchEvent(new Event("check"));
+    });
 
     const hasTest = detail.status === "success" && detail.test_code;
     this._downloadBtn.disabled = !hasTest;
@@ -162,8 +166,93 @@ const History = {
   },
 
   // -------------------------------------------------------------------
+  // Drag resize
+  // -------------------------------------------------------------------
+  _wireDivider() {
+    const divider = document.getElementById("detail-divider");
+    const container = document.getElementById("history-detail-content");
+    const paneSource = document.getElementById("detail-pane-source");
+    const paneTests = document.getElementById("detail-pane-tests");
+    let dragging = false;
+    let startY, startSourceH;
+
+    const checkIfDragNeeded = () => {
+      paneSource.style.flex = "";
+      paneSource.style.height = "";
+      paneTests.style.flex = "";
+      paneTests.style.height = "";
+
+      const wrapSource = paneSource.querySelector(".code-scroll-wrap");
+      const wrapTests = paneTests.querySelector(".code-scroll-wrap");
+      const labelSource = paneSource.querySelector(".detail-label");
+      const labelTests = paneTests.querySelector(".detail-label");
+
+      const naturalSource = labelSource.offsetHeight + wrapSource.scrollHeight + 14;
+      const naturalTests = labelTests.offsetHeight + wrapTests.scrollHeight + 14;
+      const containerH = container.clientHeight;
+      const gap = 6;
+
+      if (naturalSource + naturalTests + gap <= containerH) {
+        paneSource.style.flex = "none";
+        paneSource.style.height = "auto";
+        paneTests.style.flex = "none";
+        paneTests.style.height = "auto";
+        divider.style.display = "none";
+      } else {
+        divider.style.display = "";
+      }
+    };
+
+    divider.addEventListener("check", checkIfDragNeeded);
+
+    divider.addEventListener("mousedown", (e) => {
+      dragging = true;
+      divider.classList.add("dragging");
+      document.body.style.userSelect = "none";
+      startY = e.clientY;
+      startSourceH = paneSource.getBoundingClientRect().height;
+      e.preventDefault();
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!dragging) return;
+
+      const containerH = container.getBoundingClientRect().height;
+      const gap = 6;
+      const totalH = containerH - gap;
+      const minH = totalH * 0.2;
+
+      const delta = e.clientY - startY;
+      let newSourceH = startSourceH + delta;
+      newSourceH = Math.max(minH, Math.min(totalH - minH, newSourceH));
+
+      paneSource.style.flex = "none";
+      paneSource.style.height = newSourceH + "px";
+      paneTests.style.flex = "none";
+      paneTests.style.height = (totalH - newSourceH) + "px";
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (!dragging) return;
+      dragging = false;
+      divider.classList.remove("dragging");
+      document.body.style.userSelect = "";
+    });
+  },
+
+  // -------------------------------------------------------------------
   // Helpers
   // -------------------------------------------------------------------
+  _highlightCode(el, code, language) {
+    const supported = ["python", "javascript"];
+    const lang = supported.includes(language) ? language : undefined;
+    const result = lang
+      ? hljs.highlight(code, { language: lang })
+      : hljs.highlightAuto(code);
+    el.innerHTML = result.value;
+    el.className = `hljs${result.language ? ` language-${result.language}` : ""}`;
+  },
+
   _escape(str) {
     const div = document.createElement("div");
     div.textContent = str;

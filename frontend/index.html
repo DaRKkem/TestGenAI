@@ -151,7 +151,9 @@
           </div>
           <div class="code-editor">
             <div class="line-numbers" id="output-line-numbers"></div>
-            <pre id="output-pre" class="code-output"><code id="output-code" class="hljs"></code></pre>
+            <div class="code-scroll-wrap">
+              <pre id="output-pre"><code id="output-code" class="hljs"></code></pre>
+            </div>
             <div id="output-placeholder" class="code-placeholder">
               Generated tests will appear here.
             </div>
@@ -209,12 +211,16 @@
           <div id="history-detail-content" class="hidden">
             <div class="detail-pane" id="detail-pane-source">
               <p class="detail-label">SOURCE CODE</p>
-              <pre class="code-output detail-block"><code id="history-source-code"></code></pre>
+              <div class="code-scroll-wrap">
+                <pre><code id="history-source-code"></code></pre>
+              </div>
             </div>
             <div class="detail-divider" id="detail-divider"></div>
             <div class="detail-pane" id="detail-pane-tests">
               <p class="detail-label">GENERATED TESTS</p>
-              <pre class="code-output detail-block"><code id="history-test-code"></code></pre>
+              <div class="code-scroll-wrap">
+                <pre><code id="history-test-code"></code></pre>
+              </div>
             </div>
           </div>
         </div>
