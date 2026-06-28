@@ -58,8 +58,39 @@ const Editor = {
     const code = this._sourceInput.value.trim();
     if (!code || code.length < 30) return; // too short to detect reliably
 
+    // Pre-filter: Java signatures
+    if (/\bSystem\.out\.println\b/.test(code) || /\bpublic\s+static\s+void\s+main\b/.test(code)) {
+      this._languageSelect.value = "java";
+      return;
+    }
+    // Pre-filter: C/C++ signatures
+    if (/^\s*#include\s*[<"]/.test(code)) {
+      this._languageSelect.value = "c";
+      return;
+    }
+    // Pre-filter: C# signatures
+    if (/\bConsole\.WriteLine\b/.test(code) || /\busing\s+System\b/.test(code) || /\bnamespace\s+\w+/.test(code)) {
+      this._languageSelect.value = "csharp";
+      return;
+    }
+    // Pre-filter: Go signatures
+    if (/\bpackage\s+main\b/.test(code) || /\bfunc\s+\w+\s*\(/.test(code)) {
+      this._languageSelect.value = "go";
+      return;
+    }
+    // Pre-filter: Ruby signatures
+    if (/\bend\b/.test(code) && /\bdef\s+\w+/.test(code)) {
+      this._languageSelect.value = "ruby";
+      return;
+    }
+    // Pre-filter: Rust signatures
+    if (/\bfn\s+\w+\s*\(/.test(code) || /\blet\s+mut\b/.test(code) || /println!\s*\(/.test(code)) {
+      this._languageSelect.value = "rust";
+      return;
+    }
+
     const result = hljs.highlightAuto(code, [
-      "python", "javascript", "typescript", "java", "c", "cpp",
+      "python", "javascript", "java", "c",
       "csharp", "go", "ruby", "rust"
     ]);
 
