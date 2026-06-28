@@ -103,6 +103,7 @@ Rules:
 - Do not include any explanation, only return the test code
 - You MUST return only valid Python test code, absolutely no text, no explanation, no warning, no comment outside of the code
 - If the provided code is not Python, do your best to generate pytest tests anyway and return only the code
+- If the source code appears to be duplicated (same block repeated multiple times), treat it as a single instance and generate tests only once
 
 Detected functions:
 {func_summary}
@@ -156,6 +157,7 @@ Rules:
 - You MUST return only valid test code, absolutely no text, no explanation, no warning, no preamble
 - If something seems inconsistent, ignore it and generate the best tests you can anyway
 - Your response must start directly with the first line of code
+- If the source code appears to be duplicated (same block repeated multiple times), treat it as a single instance and generate tests only once
 
 Code analysis:
 {analysis}
