@@ -30,6 +30,15 @@ const Auth = {
       document.getElementById("switch-to-register-wrap").classList.remove("hidden");
       document.getElementById("switch-to-login-wrap").classList.add("hidden");
       this._clearError();
+      document.getElementById("register-email").value = "";
+      document.getElementById("register-password").value = "";
+      document.getElementById("register-password-confirm").value = "";
+      document.querySelectorAll(".eye-btn").forEach((btn) => {
+        const input = document.getElementById(btn.dataset.target);
+        const icon = btn.querySelector(".eye-icon");
+        input.type = "password";
+        icon.src = "assets/hide.png";
+      });
     };
 
     const showRegister = () => {
@@ -40,6 +49,14 @@ const Auth = {
       document.getElementById("switch-to-login-wrap").classList.remove("hidden");
       document.getElementById("switch-to-register-wrap").classList.add("hidden");
       this._clearError();
+      document.getElementById("login-email").value = "";
+      document.getElementById("login-password").value = "";
+      document.querySelectorAll(".eye-btn").forEach((btn) => {
+        const input = document.getElementById(btn.dataset.target);
+        const icon = btn.querySelector(".eye-icon");
+        input.type = "password";
+        icon.src = "assets/hide.png";
+      });
     };
 
     loginTab.addEventListener("click", showLogin);
@@ -148,6 +165,20 @@ const Auth = {
   _setLoading(btn, isLoading, label) {
     btn.disabled = isLoading;
     btn.textContent = label;
+  },
+  reset() {
+    document.getElementById("login-email").value = "";
+    document.getElementById("login-password").value = "";
+    document.getElementById("register-email").value = "";
+    document.getElementById("register-password").value = "";
+    document.getElementById("register-password-confirm").value = "";
+    document.querySelectorAll(".eye-btn").forEach((btn) => {
+      const input = document.getElementById(btn.dataset.target);
+      const icon = btn.querySelector(".eye-icon");
+      input.type = "password";
+      icon.src = "assets/hide.png";
+    });
+    this._clearError();
   },
 };
 

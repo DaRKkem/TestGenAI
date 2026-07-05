@@ -45,6 +45,7 @@ const App = {
     document.getElementById("logout-btn").addEventListener("click", () => {
       Api.clearSession();
       Editor.reset();
+      Auth.reset();
       location.hash = "";
       this.navigate("auth");
     });
