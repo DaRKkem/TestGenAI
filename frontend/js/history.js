@@ -272,3 +272,5 @@ const History = {
     return div.innerHTML;
   },
 };
+
+if (typeof module !== "undefined") module.exports = { History };

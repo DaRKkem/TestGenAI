@@ -267,3 +267,5 @@ const Editor = {
     this._downloadBtn.disabled = true;
   },
 };
+
+if (typeof module !== "undefined") module.exports = { Editor };

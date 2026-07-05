@@ -150,3 +150,5 @@ const Auth = {
     btn.textContent = label;
   },
 };
+
+if (typeof module !== "undefined") module.exports = { Auth };

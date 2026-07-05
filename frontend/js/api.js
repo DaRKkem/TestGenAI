@@ -177,3 +177,5 @@ const Api = {
     URL.revokeObjectURL(url);
   },
 };
+
+if (typeof module !== "undefined") module.exports = { Api };
