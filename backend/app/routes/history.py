@@ -129,8 +129,27 @@ def download_test(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied")
 
     # Determine file extension from language
-    ext = "js" if snippet.language == "javascript" else "py"
-    filename = f"test_snippet_{snippet.id}.{ext}"
+    suffix_map = {
+        "javascript": ("test", "js"),
+        "typescript": ("test", "ts"),
+        "java": ("Test", "java"),
+        "go": ("_test", "go"),
+        "ruby": ("_test", "rb"),
+        "rust": ("_test", "rs"),
+        "c": ("_test", "c"),
+        "cpp": ("_test", "cpp"),
+        "csharp": ("Test", "cs"),
+    }
+    suffix, ext = suffix_map.get(snippet.language, ("", "py"))
+
+    count = (
+        db.query(GeneratedTest)
+        .join(Snippet, GeneratedTest.snippet_id == Snippet.id)
+        .filter(Snippet.user_id == current_user.id)
+        .count()
+    )
+    short_id = generated.id[:6]
+    filename = f"test_file_{short_id}{suffix}.{ext}"
 
     # Write to a temp file and serve it
     tmp = tempfile.NamedTemporaryFile(delete=False, suffix=f".{ext}", mode="w")

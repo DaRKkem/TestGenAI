@@ -238,13 +238,26 @@ const Editor = {
 
     this._downloadBtn.addEventListener("click", () => {
       if (!this._lastResult) return;
-      const extMap = { javascript: "js", python: "py", java: "java", c: "c", ruby: "rb", go: "go" };
-      const ext = extMap[this._lastResult.language] || "txt";
+      const short = this._lastResult.snippet_id.slice(0, 6);
+      const lang = this._lastResult.language;
+      const filenameMap = {
+        python:     () => `test_file_${short}.py`,
+        javascript: () => `file_${short}.test.js`,
+        typescript: () => `file_${short}.test.ts`,
+        java:       () => `File_${short}Test.java`,
+        go:         () => `file_${short}_test.go`,
+        ruby:       () => `file_${short}_test.rb`,
+        rust:       () => `file_${short}_test.rs`,
+        c:          () => `file_${short}_test.c`,
+        cpp:        () => `file_${short}_test.cpp`,
+        csharp:     () => `File_${short}Test.cs`,
+      };
+      const filename = (filenameMap[lang] || filenameMap["python"])();
       const blob = new Blob([this._lastResult.test_code], { type: "text/plain" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `test_snippet_${this._lastResult.snippet_id}.${ext}`;
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       link.remove();

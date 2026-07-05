@@ -103,6 +103,7 @@ const History = {
 
   _renderDetail(detail) {
     this._selectedLanguage = detail.language;
+    this._selectedSnippetId = detail.snippet_id;
     this._detailPlaceholder.classList.add("hidden");
     this._detailContent.classList.remove("hidden");
 
@@ -146,11 +147,23 @@ const History = {
   // -------------------------------------------------------------------
   async _handleDownload() {
     if (!this._selectedId) return;
-    // Mirrors the backend's extension logic in history.py (download_test):
-    // only "javascript" maps to .js, every other language falls back to .py.
-    const ext = this._selectedLanguage === "javascript" ? "js" : "py";
+    const short = (this._selectedSnippetId || this._selectedId).slice(0, 6);
+    const lang = this._selectedLanguage;
+    const filenameMap = {
+      python:     () => `test_file_${short}.py`,
+      javascript: () => `file_${short}.test.js`,
+      typescript: () => `file_${short}.test.ts`,
+      java:       () => `File_${short}Test.java`,
+      go:         () => `file_${short}_test.go`,
+      ruby:       () => `file_${short}_test.rb`,
+      rust:       () => `file_${short}_test.rs`,
+      c:          () => `file_${short}_test.c`,
+      cpp:        () => `file_${short}_test.cpp`,
+      csharp:     () => `File_${short}Test.cs`,
+    };
+    const filename = (filenameMap[lang] || filenameMap["python"])();
     try {
-      await Api.downloadTest(this._selectedId, `test_snippet_${this._selectedId}.${ext}`);
+      await Api.downloadTest(this._selectedId, filename);
     } catch (err) {
       window.App.setStatus(err.message || "Download failed");
     }
