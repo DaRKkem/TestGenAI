@@ -153,13 +153,13 @@ const History = {
       python:     () => `test_file_${short}.py`,
       javascript: () => `file_${short}.test.js`,
       typescript: () => `file_${short}.test.ts`,
-      java:       () => `File_${short}Test.java`,
+      java:       () => `File_${short}_Test.java`,
       go:         () => `file_${short}_test.go`,
       ruby:       () => `file_${short}_test.rb`,
       rust:       () => `file_${short}_test.rs`,
       c:          () => `file_${short}_test.c`,
       cpp:        () => `file_${short}_test.cpp`,
-      csharp:     () => `File_${short}Test.cs`,
+      csharp:     () => `File_${short}_Test.cs`,
     };
     const filename = (filenameMap[lang] || filenameMap["python"])();
     try {

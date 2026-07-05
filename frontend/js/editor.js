@@ -79,57 +79,78 @@ const Editor = {
   // -------------------------------------------------------------------
   _autoDetectLanguage() {
     const code = this._sourceInput.value.trim();
-    if (!code || code.length < 30) return; // too short to detect reliably
+    if (!code || code.length < 20) return;
 
-    // Pre-filter: Java signatures
-    if (/\bSystem\.out\.println\b/.test(code) || /\bpublic\s+static\s+void\s+main\b/.test(code)) {
-      this._languageSelect.value = "java";
-      return;
-    }
-    // Pre-filter: C/C++ signatures
-    if (/^\s*#include\s*[<"]/.test(code)) {
-      this._languageSelect.value = "c";
-      return;
-    }
-    // Pre-filter: C# signatures
-    if (/\bConsole\.WriteLine\b/.test(code) || /\busing\s+System\b/.test(code) || /\bnamespace\s+\w+/.test(code)) {
-      this._languageSelect.value = "csharp";
-      return;
-    }
-    // Pre-filter: Go signatures
-    if (/\bpackage\s+main\b/.test(code) || /\bfunc\s+\w+\s*\(/.test(code)) {
-      this._languageSelect.value = "go";
-      return;
-    }
-    // Pre-filter: Ruby signatures
-    if (/\bend\b/.test(code) && /\bdef\s+\w+/.test(code)) {
-      this._languageSelect.value = "ruby";
-      return;
-    }
-    // Pre-filter: Rust signatures
+    // Rust — fn keyword with types
     if (/\bfn\s+\w+\s*\(/.test(code) || /\blet\s+mut\b/.test(code) || /println!\s*\(/.test(code)) {
       this._languageSelect.value = "rust";
       return;
     }
+    // Go
+    if (/\bpackage\s+\w+\b/.test(code) || /\bfunc\s+\w+\s*\(/.test(code)) {
+      this._languageSelect.value = "go";
+      return;
+    }
+    // C# — must be before Java
+    if (/\bConsole\.Write/.test(code) || /\busing\s+System\b/.test(code) || /\bnamespace\s+\w+/.test(code)) {
+      this._languageSelect.value = "csharp";
+      return;
+    }
+    // Java — must be after C#
+    if (/\bSystem\.out\./.test(code) || /\bpublic\s+static\s+void\s+main\b/.test(code)) {
+      this._languageSelect.value = "java";
+      return;
+    }
+    // Java vs C# — PascalCase method = C#, camelCase = Java
+    if (/\bpublic\s+static\s+\w+\s+([A-Z][a-zA-Z0-9]*)\s*\(/.test(code)) {
+      this._languageSelect.value = "csharp";
+      return;
+    }
+    if (/\bpublic\s+static\s+\w+\s+([a-z][a-zA-Z0-9]*)\s*\(/.test(code)) {
+      this._languageSelect.value = "java";
+      return;
+    }
+    // C/C++ — #include
+    if (/^\s*#include\s*[<"]/.test(code)) {
+      // C++ if class/template/cout/vector/namespace
+      if (/\bclass\b/.test(code) || /\btemplate\b/.test(code) || /\bcout\b/.test(code) || /\bstd::\b/.test(code) || /\bvector\b/.test(code)) {
+        this._languageSelect.value = "c";
+      } else {
+        this._languageSelect.value = "c";
+      }
+      return;
+    }
+    // C++ without #include (just int add style)
+    if (/\bint\s+\w+\s*\(int\s+\w+,\s*int\s+\w+\)/.test(code) && !/\bpublic\b/.test(code)) {
+      this._languageSelect.value = "c";
+      return;
+    }
+    // Ruby — def/end
+    if (/\bdef\s+\w+/.test(code) && /\bend\b/.test(code)) {
+      this._languageSelect.value = "ruby";
+      return;
+    }
+    // Python
+    if (/^\s*def\s+\w+\s*\(/.test(code) || /^\s*import\s+\w+/.test(code) || /^\s*from\s+\w+\s+import\b/.test(code)) {
+      this._languageSelect.value = "python";
+      return;
+    }
+    // JS/TS
+    if (/\bconst\s+\w+\s*=/.test(code) || /\bfunction\s+\w+\s*\(/.test(code) || /=>\s*\{/.test(code)) {
+      this._languageSelect.value = "javascript";
+      return;
+    }
 
+    // Fallback: hljs
     const result = hljs.highlightAuto(code, [
-      "python", "javascript", "java", "c",
+      "python", "javascript", "java", "c", "c",
       "csharp", "go", "ruby", "rust"
     ]);
-
     const langMap = {
-      python: "python",
-      javascript: "javascript",
-      typescript: "typescript",
-      java: "java",
-      c: "c",
-      cpp: "cpp",
-      csharp: "csharp",
-      go: "go",
-      ruby: "ruby",
-      rust: "rust",
+      python: "python", javascript: "javascript", typescript: "typescript",
+      java: "java", c: "c", cpp: "c", csharp: "csharp",
+      go: "go", ruby: "ruby", rust: "rust",
     };
-
     if (result.language && langMap[result.language]) {
       this._languageSelect.value = langMap[result.language];
     }
@@ -241,16 +262,16 @@ const Editor = {
       const short = this._lastResult.snippet_id.slice(0, 6);
       const lang = this._lastResult.language;
       const filenameMap = {
-        python:     () => `test_file_${short}.py`,
+        python: () => `test_file_${short}.py`,
         javascript: () => `file_${short}.test.js`,
         typescript: () => `file_${short}.test.ts`,
-        java:       () => `File_${short}Test.java`,
-        go:         () => `file_${short}_test.go`,
-        ruby:       () => `file_${short}_test.rb`,
-        rust:       () => `file_${short}_test.rs`,
-        c:          () => `file_${short}_test.c`,
-        cpp:        () => `file_${short}_test.cpp`,
-        csharp:     () => `File_${short}Test.cs`,
+        java: () => `File_${short}_Test.java`,
+        go: () => `file_${short}_test.go`,
+        ruby: () => `file_${short}_test.rb`,
+        rust: () => `file_${short}_test.rs`,
+        c: () => `file_${short}_test.c`,
+        cpp: () => `file_${short}_test.cpp`,
+        csharp: () => `File_${short}_Test.cs`,
       };
       const filename = (filenameMap[lang] || filenameMap["python"])();
       const blob = new Blob([this._lastResult.test_code], { type: "text/plain" });
