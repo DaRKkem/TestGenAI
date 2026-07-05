@@ -30,7 +30,7 @@ Built as a portfolio project at Holberton School (C28 — 2026).
 ## Project Structure
 
 ```bash
-TestGenAI/
+TestGenAI
 ├── .env           # your local secrets (never committed)
 ├── .env.example   # template — copy and fill in
 ├── .gitignore
@@ -62,10 +62,6 @@ TestGenAI/
 │       ├── test_generate.py
 │       ├── test_history.py
 │       └── test_main.py
-│
-├── docs/
-│   ├── ARCHITECTURE.md
-│   └── SEQUENCES.md
 │
 ├── frontend/
 │   ├── .babelrc
@@ -107,7 +103,9 @@ TestGenAI/
 │       ├── editor.test.js
 │       └── history.test.js
 │
-└── node_modules/  (247 npm packages)
+└── docs/
+    ├── ARCHITECTURE.md
+    └── SEQUENCES.md
 ```
 
 ## Installation Guide
@@ -153,6 +151,20 @@ Interactive docs: `http://127.0.0.1:8000/docs`
 make run-frontend
 ```
 Then open `http://localhost:5500` in your browser.
+
+## Testing
+
+**Backend — pytest (25 tests)**
+```bash
+cd backend
+pytest -v
+```
+
+**Frontend — Jest (88 tests)**
+```bash
+cd frontend
+npm test
+```
 
 ## Architecture
 
