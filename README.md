@@ -133,9 +133,8 @@ SECRET_KEY=long_random_key
 MISTRAL_API_KEY=your_mistral_key
 GROQ_API_KEY=your_groq_key
 ```
-> 💡 You can generate a secure secret key with: `python -c "import secrets; print(secrets.token_hex(32))"`
-<br>
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You can aslo find your personal mistral and groq keys by going on their official website and creating an account`
+>💡 You can generate a secure secret key with: `python -c "import secrets; print(secrets.token_hex(32))"`  
+>Your Mistral and Groq API keys are available on their respective official websites — create a free account if needed.
 
 ## Usage
 
