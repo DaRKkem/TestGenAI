@@ -218,6 +218,7 @@ const Editor = {
       window.App.setStatus("Tests generated successfully");
     } catch (err) {
       window.App.setStatus(err.message || "Generation failed");
+      this._showError(err.message || "Generation failed");
     } finally {
       this._setLoadingState(false);
     }
@@ -231,9 +232,38 @@ const Editor = {
   },
 
   // -------------------------------------------------------------------
+  // Error display
+  // -------------------------------------------------------------------
+  _showError(message) {
+    this._placeholder.classList.add("hidden");
+    this._outputCode.textContent = "";
+    this._outputCode.style.color = "";
+
+    const lines = message.split(".");
+    const filtered = lines.map(l => l.trim()).filter(Boolean);
+
+    let display = "";
+    if (filtered.length >= 2) {
+      display = `${filtered[0]}.\n${filtered[1]}.`;
+      if (filtered[2]) display += `\n${filtered[2]}.`;
+    } else {
+      display = message;
+    }
+
+    const errorEl = document.createElement("div");
+    errorEl.className = "output-error-msg";
+    errorEl.textContent = display;
+
+    this._outputCode.parentElement.appendChild(errorEl);
+  },
+
+  // -------------------------------------------------------------------
   // Output rendering (syntax highlighting + line numbers)
   // -------------------------------------------------------------------
   _renderOutput(testCode, language) {
+    const prev = this._outputCode.parentElement.querySelector(".output-error-msg");
+    if (prev) prev.remove();
+    this._outputCode.style.color = "";
     this._placeholder.classList.add("hidden");
     this._outputCode.removeAttribute("class");
     this._outputCode.removeAttribute("data-highlighted");
@@ -302,6 +332,8 @@ const Editor = {
   // Reset when leaving/entering the view
   // -------------------------------------------------------------------
   reset() {
+    const prev = this._outputCode.parentElement.querySelector(".output-error-msg");
+    if (prev) prev.remove();
     this._lastResult = null;
     this._sourceInput.value = "";
     this._updateLineNumbers(this._sourceLineNumbers, "");
