@@ -44,6 +44,17 @@ const Editor = {
     if (prefillLang) this._languageSelect.value = prefillLang;
     if (prefillTests && prefillTests !== "(No tests — generation failed)") {
       this._renderOutput(prefillTests, prefillLang || "python");
+      if (prefillTests && prefillTests !== "(No tests — generation failed)") {
+        this._renderOutput(prefillTests, prefillLang || "python");
+        this._lastResult = {
+          test_code: prefillTests,
+          language: prefillLang || "python",
+          snippet_id: "prefill",
+          llm_provider: "history"
+        };
+        this._copyBtn.disabled = false;
+        this._downloadBtn.disabled = false;
+      }
       this._copyBtn.disabled = false;
       this._downloadBtn.disabled = false;
     }
@@ -227,6 +238,7 @@ const Editor = {
     this._outputCode.removeAttribute("class");
     this._outputCode.removeAttribute("data-highlighted");
     this._outputCode.textContent = testCode;
+
 
     // Only python/javascript hljs language packs are loaded via CDN;
     // for other languages, let hljs auto-detect among the loaded ones.
