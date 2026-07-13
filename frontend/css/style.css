@@ -650,6 +650,7 @@ body {
 
 .history-list-panel, .history-detail-panel {
   position: relative;
+  overflow-y: auto;
 }
 
 .history-table {
