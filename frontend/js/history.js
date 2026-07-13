@@ -138,7 +138,7 @@ const History = {
     this._detailContent.classList.add("hidden");
     this._downloadBtn.disabled = true;
     this._deleteBtn.disabled = true;
-    this._seeEditorBtn.disabled = false;
+    this._seeEditorBtn.disabled = true;
   },
 
   // -------------------------------------------------------------------
