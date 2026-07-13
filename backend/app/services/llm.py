@@ -21,7 +21,7 @@ mistral_client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 MISTRAL_MODEL = "mistral-small-latest"
-GROQ_MODEL = "llama3-8b-8192"
+GROQ_MODEL = "llama-3.1-8b-instant"
 
 # ---------------------------------------------------------------------------
 # Health checks — lightweight requests to detect provider availability
