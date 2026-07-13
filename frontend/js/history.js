@@ -62,15 +62,14 @@ const History = {
 
       const statusClass = item.status === "success" ? "success" : "error";
       const d = new Date(item.generated_at);
-      const date = d.toLocaleDateString("fr-FR", {
+      const d2 = new Date(d.getTime() + 2 * 60 * 60 * 1000);
+      const date = d2.toLocaleDateString("fr-FR", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
-        timeZone: "Europe/Paris"
-      }) + "\u00A0\u00A0\u00A0\u00A0" + d.toLocaleTimeString("fr-FR", {
+      }) + "\u00A0\u00A0\u00A0\u00A0" + d2.toLocaleTimeString("fr-FR", {
         hour: "2-digit",
         minute: "2-digit",
-        timeZone: "Europe/Paris"
       });
 
       tr.innerHTML = `
@@ -150,16 +149,16 @@ const History = {
     const short = (this._selectedSnippetId || this._selectedId).slice(0, 6);
     const lang = this._selectedLanguage;
     const filenameMap = {
-      python:     () => `test_file_${short}.py`,
+      python: () => `test_file_${short}.py`,
       javascript: () => `file_${short}.test.js`,
       typescript: () => `file_${short}.test.ts`,
-      java:       () => `File_${short}_Test.java`,
-      go:         () => `file_${short}_test.go`,
-      ruby:       () => `file_${short}_test.rb`,
-      rust:       () => `file_${short}_test.rs`,
-      c:          () => `file_${short}_test.c`,
-      cpp:        () => `file_${short}_test.cpp`,
-      csharp:     () => `File_${short}_Test.cs`,
+      java: () => `File_${short}_Test.java`,
+      go: () => `file_${short}_test.go`,
+      ruby: () => `file_${short}_test.rb`,
+      rust: () => `file_${short}_test.rs`,
+      c: () => `file_${short}_test.c`,
+      cpp: () => `file_${short}_test.cpp`,
+      csharp: () => `File_${short}_Test.cs`,
     };
     const filename = (filenameMap[lang] || filenameMap["python"])();
     try {
