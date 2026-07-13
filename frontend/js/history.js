@@ -72,8 +72,19 @@ const History = {
         minute: "2-digit",
       });
 
+      const langDisplay = {
+        javascript: "JavaScript/TypeScript",
+        c: "C/C++",
+        csharp: "C#",
+        python: "Python",
+        go: "Go",
+        rust: "Rust",
+        ruby: "Ruby",
+        java: "Java",
+      };
+      const displayLang = langDisplay[item.language] || item.language;
       tr.innerHTML = `
-        <td>${this._escape(item.language)}</td>
+        <td>${this._escape(displayLang)}</td>
         <td>${this._escape(item.llm_provider)}</td>
         <td><span class="status-pill ${statusClass}">${item.status}</span></td>
         <td>${date}</td>
