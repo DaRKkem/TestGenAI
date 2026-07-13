@@ -134,7 +134,7 @@ MISTRAL_API_KEY=your_mistral_key
 GROQ_API_KEY=your_groq_key
 ```
 >💡 You can generate a secure secret key with: `python -c "import secrets; print(secrets.token_hex(32))"`  
->Find your Mistral and Groq API keys on their official websites (free account required)
+>Find your Mistral and Groq API keys on their official websites (free account required).
 
 ## Usage
 
