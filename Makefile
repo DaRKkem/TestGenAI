@@ -2,7 +2,7 @@ setup:
 	cp .env.example .env
 
 install:
-	pip install -r //TEMPORARY
+	pip install -r requirements.txt
 
 run-backend:
 	cd backend && uvicorn app.main:app --reload --reload-exclude "*.db" --reload-exclude "*.db-journal"
