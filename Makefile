@@ -9,3 +9,6 @@ run-backend:
 
 run-frontend:
 	cd frontend && python -m http.server 5500
+
+run-landing:
+	cd landing && python -m http.server 8080
