@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestGen AI — Unit tests, generated from your code</title>
+  <meta name="description" content="TestGen AI turns any function into ready-to-run unit tests using Mistral AI and Groq, with automatic fallback and full generation history." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="./assets/favicon.ico" />
+</head>
+
+<body>
+
+  <!-- ===================== HEADER / NAV ===================== -->
+  <header class="lp-nav">
+    <div class="lp-nav-brand">
+      <img src="./assets/TestGenAI.png" alt="TestGen AI" class="lp-logo" />
+      <span>TestGen AI</span>
+    </div>
+    <nav class="lp-nav-links">
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="https://github.com/DaRKkem/TestGenAI" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <a href="index.html" class="btn-start btn-start-nav" id="nav-start-btn">Start generating</a>
+  </header>
+
+  <main>
+
+    <!-- ===================== INTRO / HERO ===================== -->
+    <section class="lp-hero">
+      <div class="lp-hero-text">
+        <p class="lp-eyebrow">// unit tests, on demand</p>
+        <h1>Write the function.<br />Let the tests write themselves.</h1>
+        <p class="lp-hero-sub">
+          TestGen AI reads your source code and generates real, runnable unit tests —
+          normal cases, edge cases, and error cases — in 10 languages, backed by
+          Mistral AI with automatic Groq fallback.
+        </p>
+        <a href="http://localhost:5500/#auth" class="btn-start" id="hero-start-btn">Start generating →</a>
+      </div>
+
+      <!-- Signature visual: a miniature of the app's own editor, code going in, tests coming out -->
+      <div class="lp-hero-visual" aria-hidden="true">
+        <div class="lp-mock-window">
+          <div class="lp-mock-titlebar">
+            <span class="lp-dot lp-dot-r"></span>
+            <span class="lp-dot lp-dot-y"></span>
+            <span class="lp-dot lp-dot-g"></span>
+            <span class="lp-mock-filename">divide.py</span>
+          </div>
+          <pre class="lp-mock-code"><code><span class="lp-kw">def</span> <span class="lp-fn">divide</span>(a, b):
+    <span class="lp-kw">if</span> b == <span class="lp-num">0</span>:
+        <span class="lp-kw">raise</span> <span class="lp-fn">ValueError</span>(<span class="lp-str">"b must not be 0"</span>)
+    <span class="lp-kw">return</span> a / b</code></pre>
+          <div class="lp-mock-arrow">↓ generated</div>
+          <pre class="lp-mock-code lp-mock-code-out"><code><span class="lp-kw">def</span> <span class="lp-fn">test_divide_normal</span>():
+    <span class="lp-kw">assert</span> divide(<span class="lp-num">10</span>, <span class="lp-num">2</span>) == <span class="lp-num">5</span>
+
+<span class="lp-kw">def</span> <span class="lp-fn">test_divide_by_zero</span>():
+    <span class="lp-kw">with</span> pytest.raises(ValueError):
+        divide(<span class="lp-num">4</span>, <span class="lp-num">0</span>)</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FEATURES ===================== -->
+    <section class="lp-features" id="features">
+      <h2 class="lp-section-title">What it does</h2>
+
+      <div class="lp-feature-grid">
+
+        <article class="lp-feature-card">
+          <div class="lp-feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none"><path d="M14 12L4 20l10 8M26 12l10 8-10 8M23 8l-6 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Structured code understanding</h3>
+          <p>
+            For Python, TestGen AI parses your code with the <code>ast</code> module to
+            extract real function signatures. For every other supported language, it uses
+            prompt chaining — one pass analyzes the code, a second writes the tests.
+          </p>
+        </article>
+
+        <article class="lp-feature-card">
+          <div class="lp-feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none"><path d="M20 4v10M20 26v10M4 20h10M26 20h10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="20" cy="20" r="7" stroke="currentColor" stroke-width="2.5"/></svg>
+          </div>
+          <h3>Never blocked by one provider</h3>
+          <p>
+            Every generation runs a health check first. If Mistral AI is unavailable,
+            TestGen AI automatically retries on Groq's LPU-backed infrastructure —
+            so a single provider outage never stops your work.
+          </p>
+        </article>
+
+        <article class="lp-feature-card">
+          <div class="lp-feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none"><rect x="6" y="8" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2.5"/><path d="M6 16h28M13 8v-2M27 8v-2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Every generation, kept</h3>
+          <p>
+            Revisit past runs at any time: source code, generated tests, and provider
+            used are all saved to your history, with one click to reopen a run
+            straight back into the editor.
+          </p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section class="lp-about" id="about">
+      <h2 class="lp-section-title">About the project</h2>
+      <div class="lp-about-grid">
+        <div class="lp-about-story">
+          <p>
+            Writing unit tests is one of those tasks every developer knows they should do
+            more of — normal cases, edge cases, error cases — and one of the first things
+            that gets rushed when a deadline is close. I kept hitting that same wall on my
+            own projects, and at the same time I wanted to build something with large
+            language models that went further than a chatbot: a tool that actually reads
+            code and hands back something a developer can drop straight into their test
+            suite.
+          </p>
+          <p>
+            TestGen AI is where those two ideas met. It's my end-of-first-year
+            <strong> Portfolio Project</strong> at
+            <a href="https://www.holbertonschool.com/" target="_blank" rel="noopener">Holberton School</a>,
+            designed, built, and shipped solo over 11 weeks — backend, AI integration,
+            frontend, and documentation all my own.
+          </p>
+          <p class="lp-about-links">
+            <a href="https://github.com/DaRKkem" target="_blank" rel="noopener">GitHub</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://github.com/DaRKkem/TestGenAI" target="_blank" rel="noopener">Project repository</a>
+          </p>
+        </div>
+        <div class="lp-about-photo" aria-hidden="true">
+          <div class="lp-avatar-placeholder">DR</div>
+          <p class="lp-about-name">Damien Rossi</p>
+          <p class="lp-about-role">Solo developer — TestGen AI</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="lp-footer">
+    <span>TestGen AI — Damien Rossi, Holberton School France</span>
+    <a href="https://github.com/DaRKkem/TestGenAI" target="_blank" rel="noopener">github.com/DaRKkem/TestGenAI</a>
+  </footer>
+
+  <script src="js/landing.js"></script>
+</body>
+
+</html>
