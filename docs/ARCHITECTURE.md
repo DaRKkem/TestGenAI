@@ -68,7 +68,7 @@ classDiagram
 ```mermaid
 graph TD
     A[Frontend\nHTML/CSS/JS] -->|REST JSON| B[Backend\nFastAPI Python]
-    B -->|prompt| C[APIs LLM\nMistral / Groq / OpenAI]
+    B -->|prompt| C[APIs LLM\nMistral / Groq]
     C -->|tests| B
     B -->|save/fetch| D[(Base de données\nSQLite + SQLAlchemy)]
     B -->|autres langages| E[Prompt Chaining\nLLM1 prompt LLM2]
