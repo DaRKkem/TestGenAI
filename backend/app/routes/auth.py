@@ -47,16 +47,16 @@ class RegisterRequest(BaseModel):
     def validate_password(cls, v):
         errors = []
         if len(v) < 12:
-            errors.append("au moins 12 caractères")
+            errors.append("at least 12 characters")
         if not re.search(r"[A-Z]", v):
-            errors.append("une majuscule")
+            errors.append("an uppercase letter")
         if not re.search(r"[0-9]", v):
-            errors.append("un chiffre")
+            errors.append("a digit")
         if not re.search(r"[^a-zA-Z0-9]", v):
-            errors.append("un caractère spécial")
+            errors.append("a special character")
         if errors:
-            raise ValueError("Le mot de passe doit contenir : " + ", ".join(errors))
-        return v    
+            raise ValueError("Password must contain:\n " + ", ".join(errors))
+        return v
 
 
 class TokenResponse(BaseModel):

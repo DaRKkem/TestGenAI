@@ -365,6 +365,10 @@ input[type="password"]::-webkit-contacts-auto-fill-button {
   display: none !important;
 }
 
+#auth-error {
+  white-space: pre-line;
+}
+
 /* =========================================================================
    Buttons
    ========================================================================= */
